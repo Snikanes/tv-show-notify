@@ -20,9 +20,9 @@ module.exports = function(context) {
     return Promise.all([devices, episodes]).then(([devices, episodes]) => {
         devices.forEach(device => episodes.forEach(episode => notifier.notify(device, episode.getAiredString(), "")))
     }).then(() => {
-        //context.done()
+        context.done()
     }).catch(error => {
         console.error(error)
-        //context.done()
+        context.done()
     })
 }
