@@ -5,8 +5,14 @@
             "name": "tvshows",
             "type": "blob",
             "direction": "in",
-            "path": "tvshows/{name}",
+            "path": "tvshowstorage/{name}",
             "connection":"MyStorageConnectionAppSetting"
+        },
+        {
+            "schedule": "0 */5 * * * *",
+            "name": "timer",
+            "type": "timerTrigger",
+            "direction": "in"
         }
     ]
 }
