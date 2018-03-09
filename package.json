@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "author": "Eirik Vikanes",
+  "engines":{
+    "node": "8.9.x"
+  },
   "license": "MIT",
   "dependencies": {
     "lodash": "^4.17.4",
