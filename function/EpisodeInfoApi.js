@@ -8,7 +8,7 @@ class EpisodeInfoApi {
     this.token = null
   }
 
-  async sendAuthenticate () {
+  sendAuthenticate () {
     return fetch('https://api.thetvdb.com/login', {
       method: 'post',
       headers: {
@@ -22,25 +22,30 @@ class EpisodeInfoApi {
     })
   }
 
-  async authenticate () {
-    if (this.token === null) {
-      const response = await (await this.sendAuthenticate()).json()
-
-      if (typeof response.token === 'undefined') {
-        throw 'CouldNotAuthenticate: token in response was null'
+  authenticate () {
+    return new Promise((resolve, reject) => {
+      if(this.token !== null) {
+        return resolve()
       }
-      this.token = response.token
-    }
+      return this.sendAuthenticate()
+      .then(response => response.json())
+      .then(json => {
+        if (typeof json.token === 'undefined') {
+          return reject(new Error('CouldNotAuthenticate: token in response was null'))
+        }
+        this.token = json.token
+        return resolve()
+      })
+    })
   }
 
   async sendGet (url, paramString) {
-    let response = await fetch(url + paramString, {
+    return fetch(url + paramString, {
       headers: {
         'Authorization': 'Bearer ' + this.token,
         'Content-type': 'application/json'
       }
-    })
-    return response.json()
+    }).then(response => response.json())
   }
 
   async checkForNewEpisodes(showIds) {
