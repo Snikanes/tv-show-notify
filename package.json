@@ -16,7 +16,6 @@
     "mocha": "^3.2.0"
   },
   "scripts": {
-    "test": "env ENV=TEST ./node_modules/mocha/bin/mocha",
-    "start": "node ./src/webapi/api.js"
+    "test": "env ENV=TEST ./node_modules/mocha/bin/mocha"
   }
 }
