@@ -39,7 +39,7 @@ class EpisodeInfoApi {
     })
   }
 
-  async sendGet (url, paramString) {
+  sendGet (url, paramString) {
     return fetch(url + paramString, {
       headers: {
         'Authorization': 'Bearer ' + this.token,
@@ -48,11 +48,7 @@ class EpisodeInfoApi {
     }).then(response => response.json())
   }
 
-  async checkForNewEpisodes(showIds) {
-
-  }
-
-  async getEpisodes (showId) {
+  getEpisodes (showId) {
     const params = '/' + showId + '/episodes'
     return this.sendGet('https://api.thetvdb.com/series', params)
   }
