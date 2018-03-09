@@ -1,0 +1,12 @@
+{
+    "disabled": false,
+    "bindings": [
+        {
+            "name": "tvshows",
+            "type": "blob",
+            "direction": "in",
+            "path": "tvshows/{name}",
+            "connection":"MyStorageConnectionAppSetting"
+        }
+    ]
+}

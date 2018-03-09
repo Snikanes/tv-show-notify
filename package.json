@@ -1,0 +1,22 @@
+{
+  "name": "torrentbot",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Eirik Vikanes",
+  "license": "MIT",
+  "dependencies": {
+    "lodash": "^4.17.4",
+    "moment": "^2.18.1",
+    "node-fetch": "^1.6.3",
+    "pushbullet": "^2.1.0"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "eslint-config-google": "^0.9.1",
+    "mocha": "^3.2.0"
+  },
+  "scripts": {
+    "test": "env ENV=TEST ./node_modules/mocha/bin/mocha",
+    "start": "node ./src/webapi/api.js"
+  }
+}
