@@ -5,15 +5,15 @@
             "name": "tvshows",
             "type": "blob",
             "direction": "in",
-            "path": "tvshows/{name}",
-            "connection":"MyStorageConnectionAppSetting"
+            "path": "tvshows/tvshows.json",
+            "connection":"AzureWebJobsStorage"
         },
         {
             "name": "prefconfig",
             "type": "blob",
             "direction": "in",
-            "path": "tvshows/{name}",
-            "connection":"MyStorageConnectionAppSetting"
+            "path": "tvshows/prefconfig.json",
+            "connection":"AzureWebJobsStorage"
         },
         {
             "schedule": "0 */5 * * * *",
