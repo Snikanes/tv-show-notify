@@ -1,5 +1,5 @@
 const tvshows = require("../tvshows.json")
-const func = require("./function")
+const func = require("./index")
 
 context = { 
     bindings: {
@@ -7,8 +7,8 @@ context = {
     }
 }
 
-async function run(context) {
-    await func(context)
+function run(context) {
+    func(context)
 }
 
 run(context)

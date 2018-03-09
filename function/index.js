@@ -1,27 +1,28 @@
 const EpisodeInfoApi = require("./EpisodeInfoApi")
 const Episode = require("./Episode")
+const _ = require('lodash')
 const Notifier = require("./Notifier")
 
-module.exports = async function(context) {
-    try {
-        const showBlob = context.bindings.tvshows
-        const prefs = context.bindings.prefconfig
-        
-        const tvApi = new EpisodeInfoApi()
-        await tvApi.authenticate()
+module.exports = function(context) {
+    const showBlob = context.bindings.tvshows
+    const prefs = context.bindings.prefconfig
+    
+    const tvApi = new EpisodeInfoApi()
+    const notifier = new Notifier()
 
-        const notifier = new Notifier()
-        const devices = await notifier.getDevices()
-        
-        showBlob.tvshows.forEach(async show => {
-            const episodes = (await tvApi.getEpisodes(show.id)).data.map(json => Episode.fromJson(json, show.id, show.name))
-            episodes.forEach(episode => {
-                if(episode.didAirToday()) {
-                    devices.forEach(device => notifier.notify(device, episode.getAiredString(), ""))
-                }
-            })
-        })
-    } catch(error) {
-        console.error(error)
-    }
+    const devices = notifier.getDevices()
+    const episodes = tvApi.authenticate().then(() => {
+        return Promise.all(showBlob.tvshows.map(show => tvApi.getEpisodes(show.id)))
+    }).then(shows => {
+        return shows.map((show, index) => show.data.map(json => Episode.fromJson(json, showBlob.tvshows[index].id, showBlob.tvshows[index].name)))
+    }).then(episodes => _.flatten(episodes).filter(episode => episode.didAirToday()))
+
+    return Promise.all([devices, episodes]).then(([devices, episodes]) => {
+        devices.forEach(device => episodes.forEach(episode => notifier.notify(device, episode.getAiredString(), "")))
+    }).then(() => {
+        context.done()
+    }).catch(error => {
+        context.error(error)
+        context.done()
+    })
 }
