@@ -16,7 +16,7 @@
             "connection":"AzureWebJobsStorage"
         },
         {
-            "schedule": "0 */5 * * * *",
+            "schedule": "0 0 16 * * *",
             "name": "timer",
             "type": "timerTrigger",
             "direction": "in"
