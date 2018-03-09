@@ -20,7 +20,9 @@ module.exports = async function(context) {
         const airingToday = _.flatten(episodes).filter(episode => episode.didAirToday())
 
         context.log(`${airingToday.length} episodes airing today.`)
+
         devices.forEach(device => airingToday.forEach(episode => notifier.notify(device, episode.getAiredString(), "")))
+        
         context.log('Devices notified.')
     } catch(error) {
         context.error(error)

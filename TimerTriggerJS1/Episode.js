@@ -16,7 +16,7 @@ class Episode {
     }
 
     didAirToday() {
-        return this.dateAired.isValid() && moment().isSame(this.dateAired, "week")
+        return this.dateAired.isValid() && moment().isSame(this.dateAired, "day")
     }
 
     getAiredString() {
