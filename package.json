@@ -3,22 +3,23 @@
   "version": "1.0.0",
   "main": "index.js",
   "author": "Eirik Vikanes",
-  "engines":{
+  "engines": {
     "node": "8.9.x"
   },
   "license": "MIT",
   "dependencies": {
+    "jest": "^22.4.2",
     "lodash": "^4.17.4",
     "moment": "^2.18.1",
+    "moment-timezone": "^0.5.14",
     "node-fetch": "^1.6.3",
     "pushbullet": "^2.1.0"
   },
   "devDependencies": {
     "chai": "^3.5.0",
-    "eslint-config-google": "^0.9.1",
-    "mocha": "^3.2.0"
+    "eslint-config-google": "^0.9.1"
   },
   "scripts": {
-    "test": "env ENV=TEST ./node_modules/mocha/bin/mocha"
+    "test": "env ENV=TEST jest"
   }
 }

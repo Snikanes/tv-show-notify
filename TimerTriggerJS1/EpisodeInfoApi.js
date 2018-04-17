@@ -1,15 +1,15 @@
 const fetch = require('node-fetch')
-
 const prefs = require('../prefconfig.json')
 
 class EpisodeInfoApi {
 
-  constructor () {
+  constructor (requester) {
     this.token = null
+    this.requester = requester || fetch
   }
 
   sendAuthenticate (apikey, username, userkey) {
-    return fetch('https://api.thetvdb.com/login', {
+    return this.requester('https://api.thetvdb.com/login', {
       method: 'post',
       headers: {
         'Content-type': 'application/json'
@@ -22,30 +22,33 @@ class EpisodeInfoApi {
     })
   }
 
-  authenticate (apikey, username, userkey) {
-    return new Promise((resolve, reject) => {
-      if(this.token !== null) {
-        return resolve()
-      }
-      return this.sendAuthenticate(apikey, username, userkey)
-      .then(response => response.json())
-      .then(json => {
-        if (typeof json.token === 'undefined') {
-          return reject(new Error('CouldNotAuthenticate: token in response was null'))
-        }
-        this.token = json.token
-        return resolve()
-      })
-    })
-  }
+async authenticate (apikey, username, userkey) {
+	if(this.token !== null) {
+		return resolve()
+	}
+	const response = await this.sendAuthenticate(apikey, username, userkey)
+	if(response.status !== 200) {
+		throw new Error(`Request failed: status was ${response.status}`)
+	}
+	const json = await response.json()
+	if (typeof json.token === 'undefined') {
+		throw new Error('CouldNotAuthenticate: token in response was null')
+	}
+	this.token = json.token
+}
 
   sendGet (url, paramString) {
-    return fetch(url + paramString, {
+    return this.requester(url + paramString, {
       headers: {
         'Authorization': 'Bearer ' + this.token,
         'Content-type': 'application/json'
       }
     }).then(response => response.json())
+  }
+
+  getShowInfo (showId) {
+    const params = '/' + showId
+    return this.sendGet('https://api.thetvdb.com/series', params)
   }
 
   getEpisodes (showId) {
