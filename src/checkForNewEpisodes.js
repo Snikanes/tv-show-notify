@@ -32,7 +32,7 @@ const checkForNewEpisodes = async () => {
         const airingToday = _.flatten(episodes).filter(episode => episode.justAired(config.notificationDelayHours))
 
         // Notify devices of new episodes
-        //await Promise.all(airingToday.map(episode => notifier.notify(devices, episode.getAiredString(config.localTimezone), "")))
+        await Promise.all(airingToday.map(episode => notifier.notify(devices, episode.getAiredString(config.localTimezone), "")))
         console.log('Devices notified.')
         
         const needsDownload = airingToday.filter(episode => !repository.getAvailableForStreaming(episode.showId))
