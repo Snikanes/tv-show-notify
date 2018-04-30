@@ -53,7 +53,7 @@ class FloodDownloader {
         const apiRoute = "/api/client/add"
         const content = JSON.stringify({
             "urls": [magnetUri],
-            "destination": "/home/snikanes/Downloads",
+            "destination": "/media/hdd/Downloads",
             "isBasePath": false,
             "start": true,
             "tags": [""]

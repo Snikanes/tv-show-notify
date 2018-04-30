@@ -41,15 +41,14 @@ const checkForNewEpisodes = async () => {
         // Put all new episodes on the queue
         await Promise.all(needsDownload.map(async episode => {
             console.log(`Queuing ${episode.showName}, season ${episode.season}, episode ${episode.episodeNumber}...`)
-            await redis.appendToQueue(episode)
+            return redis.appendToQueue(episode)
         }))
 
         // Open connection to Flood
         const queueLength = await redis.getQueueLength()
         const flood = await FloodDownloader.create(config.floodUrl, config.floodUsername, config.floodPassword)
-        
         // Attempt to retreive torrents for all pending downloads
-        for(i = 0; i < queueLength; i++) {
+        for(let i = 0; i < queueLength; i++) {
             const episode = Episode.fromRedisFields(await redis.popFromQueue())
             const torrents = await getTorrents(episode)
             if(torrents.length === 0 || torrents[0].seeders < config.minSeeders) {
