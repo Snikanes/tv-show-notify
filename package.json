@@ -8,6 +8,7 @@
   },
   "license": "MIT",
   "dependencies": {
+    "better-sqlite3": "^4.1.0",
     "jest": "^22.4.2",
     "lodash": "^4.17.4",
     "moment": "^2.18.1",
@@ -20,6 +21,7 @@
     "eslint-config-google": "^0.9.1"
   },
   "scripts": {
-    "test": "env ENV=TEST jest"
+    "test": "env ENV=TEST jest",
+    "start": "node src/index.js"
   }
 }

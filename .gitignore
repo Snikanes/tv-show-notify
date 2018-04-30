@@ -61,3 +61,4 @@ prefconfig.json
 tvshows.json
 local.settings.json
 .vscode
+*.db

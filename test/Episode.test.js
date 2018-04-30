@@ -1,7 +1,7 @@
 const expect = require("chai").expect;
 
 const moment = require("moment-timezone");
-const Episode = require("../TimerTriggerJS1/Episode.js");
+const Episode = require("../src/Episode.js");
 
 const episodeJson = {
 	absoluteNumber: 17,

@@ -1,4 +1,4 @@
-const EpisodeInfoApi = require("../TimerTriggerJS1/EpisodeInfoApi")
+const EpisodeInfoApi = require("../src/EpisodeInfoApi")
 
 const mockRequester = jest.fn()
 const mockResponses = {
