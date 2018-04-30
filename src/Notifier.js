@@ -1,6 +1,6 @@
 const pushbullet = require("pushbullet")
 const PushBullet = require("pushbullet")
-const prefs = require("../prefconfig.json")
+const prefs = require("../config.js")
 
 class Notifier {
 

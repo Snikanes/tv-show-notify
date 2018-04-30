@@ -2,13 +2,16 @@ const fetch = require("node-fetch")
 
 class FloodDownloader {
 
-    constructor() {
+    constructor(baseUrl, username, password) {
+        this.baseUrl = baseUrl
+        this.username = username
+        this.password = password
         this.jwt = ""
     }
 
-    static async create(url, username, password) {
-        const token = await FloodDownloader.getJwtToken(url, username, password)
-        const downloader = new FloodDownloader()
+    static async create(baseUrl, username, password) {
+        const token = await FloodDownloader.getJwtToken(baseUrl, username, password)
+        const downloader = new FloodDownloader(baseUrl, username, password)
         downloader.jwt = token
         return downloader
     }
@@ -17,21 +20,22 @@ class FloodDownloader {
         return fetch(url, {
             method: 'POST',
             headers: new fetch.Headers({
-                'Content-Type': 'application/json',
-                'Content-Length': content.length.toString
+                "Content-Type": "application/json",
+                "Content-Length": content.length.toString,
+                "Cookie": cookie
             }),
-            cookie: cookie,
             body: content
         })
     }
 
     static async getJwtToken(url, username, password) {
+        const apiRoute = "/auth/authenticate"
         const content = JSON.stringify({
             "username": username,
             "password": password
         })
 
-        return FloodDownloader.sendRequest(url, content)
+        return FloodDownloader.sendRequest(url + apiRoute, content)
         .then(async response => {
             if(response.status != 200) {
                 throw new Error("Could not authenticate with downloader")
@@ -42,20 +46,24 @@ class FloodDownloader {
         .catch(err => console.error(err))
     }
 
-    async requestDownload(magnetUri, jwt, subdir) {
-        if(this.jwt.length === 0) {
-            this.jwt = await this.getJwtToken()
+    async requestDownload(magnetUri, subdir) {
+        if(!this.jwt) {
+            this.jwt = await FloodDownloader.getJwtToken(this.baseUrl, this.username, this.password)
         }
+        const apiRoute = "/api/client/add"
         const content = JSON.stringify({
             "urls": [magnetUri],
-            "destination": `/home/snikanes/Downloads/${subdir}`,
+            "destination": "/home/snikanes/Downloads",
             "isBasePath": false,
             "start": true,
             "tags": [""]
         })
-        const cookie = `jwt=${jwt}`
-        return this.sendRequest(url, content, cookie)
+        const cookie = `jwt=${this.jwt}`
+
+        return FloodDownloader.sendRequest(this.baseUrl + apiRoute, content, cookie)
         .catch(err => console.error(err))
         
     }
 }
+
+module.exports = FloodDownloader

@@ -15,6 +15,21 @@ class Episode {
         return new Episode(json.id, showId, showName, json.airedSeason, json.airedEpisodeNumber, json.firstAired, airsTime)
     }
 
+    static fromRedisFields(fields) {
+        const dateTimeAired = moment(fields[5])
+        return new Episode(fields[0], fields[1], fields[2], fields[3], fields[4])
+    }
+
+    toRedisFields() {
+        return {
+            "id": this.id, 
+            "showId": this.showId, 
+            "showName": this.showName, 
+            "season": this.season, 
+            "episodeNumber": this.episodeNumber
+        }
+    }
+
     justAired(offset_hours, now) {
         const now_time = now || moment()    
         const notify_time = this.dateTimeAired.add(offset_hours, 'hours')

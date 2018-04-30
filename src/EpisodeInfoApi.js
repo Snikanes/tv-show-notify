@@ -1,5 +1,5 @@
 const fetch = require('node-fetch')
-const prefs = require('../prefconfig.json')
+const prefs = require('../config.js')
 
 class EpisodeInfoApi {
 
