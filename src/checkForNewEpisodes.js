@@ -14,12 +14,12 @@ const scraper = require('torrent-scrape')
 const checkForNewEpisodes = async () => {
     console.log("Initiating check for episodes airing today.")
 
-    try {
-        const repository = new ShowRepository()
-        const redis = new RedisRepository()
-        const tvApi = new EpisodeInfoApi()
-        const notifier = new Notifier(config.pushbulletToken)
+    const repository = new ShowRepository()
+    const redis = new RedisRepository()
+    const tvApi = new EpisodeInfoApi()
+    const notifier = new Notifier(config.pushbulletToken)
 
+    try {
         const trackedShows = repository.getAllTrackedShows()
         
         const devices = await notifier.getDevices()
@@ -67,6 +67,8 @@ const checkForNewEpisodes = async () => {
         }
     } catch (error) {
         console.error(error)
+    } finally {
+        redis.client.quit()
     }
 }
 
